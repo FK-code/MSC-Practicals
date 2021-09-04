@@ -1,0 +1,45 @@
+<Inventory>
+
+	<tborders>
+
+		<row>
+			<orderid>1182</orderid>
+			<orderdate>12/12/21</orderdate>
+			<deliverydate>13/12/21</deliverydate>
+
+		</row>
+		<row>
+			<orderid>2182</orderid>
+			<orderdate>12/12/21</orderdate>
+			<deliverydate>13/12/21</deliverydate>
+		</row>
+		<row>
+			<orderid>3182</orderid>
+			<orderdate>12/12/21</orderdate>
+			<deliverydate>13/12/21</deliverydate>
+		</row>
+
+	</tborders>
+
+
+	<tbitems>
+
+		<row>
+			<orderid>1182</orderid>
+			<itemid>001</itemid>
+			<qty>10</qty>
+		</row>
+		<row>
+			<orderid>1182</orderid>
+			<itemid>002</itemid>
+			<qty>30</qty>
+		</row>
+		<row>
+			<orderid>3182</orderid>
+			<itemid>003</itemid>
+			<qty>12</qty>
+		</row>
+
+	</tbitems>
+
+</Inventory>

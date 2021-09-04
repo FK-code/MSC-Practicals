@@ -1,0 +1,28 @@
+
+<orders>
+	<orderid>0001</orderid>
+	<orderdate>
+			<day>12</day>
+			<month>4</month>
+			<year>2019</year>
+	</orderdate>
+	<deliverydate>
+			<day>13</day>
+			<month>4</month>
+			<year>2019</year>
+	</deliverydate>
+	<items>
+		<item>
+			<itemid>8881</itemid>
+			<qty>2</qty>
+		</item>
+		<item>
+			<itemid>8882</itemid>
+			<qty>6</qty>
+		</item>
+		<item>
+			<itemid>8883</itemid>
+			<qty>45</qty>
+		</item>
+	</items>
+</orders>
