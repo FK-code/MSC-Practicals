@@ -1,0 +1,37 @@
+1)Create a table Product with ID and XML Document for Customer's order.
+
+Create table Product(ID varchar2(10),CUST XMLTYPE);
+// inserting values
+insert into Product values(
+1,XMLTYPE('
+<CUSTOMER>
+<CID>C001</CID>
+<NAME>Ram</NAME>
+<CITY>MUMBAI</CITY>
+<ORDER>
+ <OID>O001</OID>
+ <ODATE>25/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>Mouse</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>KeyBoard</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+</ORDER>
+<ORDER>
+ <OID>O002</OID>
+ <ODATE>31/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>PenDrive</NAME>
+ <QTY>2</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>Modem</NAME>
+ <QTY>10</QTY>
+ </ORDER_ITEM> 
+</ORDER>
+</CUSTOMER>
+')
+);

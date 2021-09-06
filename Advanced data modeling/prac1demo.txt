@@ -1,0 +1,283 @@
+XML DATABASES
+Create a table Product with ID and XML Document for Customer's order .Map that XML
+document from the Given Relational Database Schema and Object-Relational Schema
+Assume the values for all attributes.
+A. Relational Database schema
+=======================
+Table x: one row for each customer
+Customer-id | customer_name | customer_city
+Table y: One row for each order. Multiple rows for each customer
+Order_id|customer_id| Order_date
+Table z: multiple rows for each order
+Order-id | product | Qty |
+<Tables>
+ <Table_1>
+ <Row>
+ <Column_1>...</Column_1>
+ ...
+ <Column_n>...</Column_n>
+ </Row>
+ ...
+ </Table_1>
+ ...
+ <Table_n>
+ <Row>
+ <Column_1>...</Column_1>
+ ...
+ <Column_m>...</Column_m>
+ </Row>
+ ...
+ </Table_n>
+ </Tables>
+B. Object-Relational schema
+=======================
+Type Cust:
+Customer-id | customer_name | customer_city| ord of type order
+Type order:
+Order_id| | Order_date|itm of type item
+Type item:
+| product | Qty |
+1. Insert 3 rows .Rows should be with multiple orders and multiple items(at least two)
+2. Extract the XML fragment for order items for order no 'O001'
+3. Extract XML Fragment for orders of customers with customer_id='C0001'
+4. Insert a row with id=5 and nothing for Customers orders.
+5. Insert a row with no order date for on order. 
+Fire the queries for above table
+1. Select the rows with NULL in customers order node
+2. Select a row with no order date
+3. Display the date on which order 'O001' was placed.
+4. Display the quantity of product 'P001' of order 'O001' as numeric.
+5. Display the quantity of product 'P001' of order 'O001' without using extract() function
+6. Display the items ordered in the order 'O002' using ExtractValue() function.What is your
+observation Explain Why?
+7. Extract dates of the orders for which they exist
+Create table Product(
+ID varchar2(10),
+CUST XMLTYPE
+);
+insert into Product values(
+1,XMLTYPE('
+<CUSTOMER>
+<CID>C001</CID>
+<NAME>Ram</NAME>
+<CITY>MUMBAI</CITY>
+<ORDER>
+ <OID>O001</OID>
+ <ODATE>25/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>Mouse</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>KeyBoard</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+</ORDER>
+<ORDER>
+ <OID>O002</OID>
+ <ODATE>31/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>PenDrive</NAME>
+ <QTY>2</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>Modem</NAME>
+ <QTY>10</QTY>
+ </ORDER_ITEM> 
+</ORDER>
+</CUSTOMER>
+')
+);
+Extract the XML fragment for order items for order no 'O002'
+select p.CUST.extract('/CUSTOMER/ORDER[OID="O002"]').getStringVal() "Orders" from
+Product p;
+Extract XML Fragment for orders of customers with customer_id='C0002'
+Select p.CUST.extract('/CUSTOMER').getStringVal() from Product p where
+p.CUST.extract('//CUSTOMER/CID/text()').getStringVal() = 'C001';
+ OR
+select p.CUST.extract('/CUSTOMER[CID="C002"]').getStringVal() "Orders" from Product p;
+Insert a row with id=15 and nothing for Customers orders.
+Insert into Product values(
+15,NULL);
+Insert a row with no order date for on order.
+Insert into Product values(
+5,XMLTYPE('
+<CUSTOMER>
+<CID>C004</CID>
+<NAME>LALOO</NAME>
+<CITY>PATNA</CITY>
+<ORDER>
+ <OID>O009</OID>
+ <ODATE></ODATE>
+ <ORDER_ITEM>
+ <NAME>FODDER</NAME>
+ <QTY>50</QTY>
+ </ORDER_ITEM>
+</ORDER>
+</CUSTOMER>
+'));
+Select a row with no order date 
+select ID,p.CUST.extract('/CUSTOMER/ORDER/OID/text()').getStringVal() from
+Product p where
+p.CUST.extract('/CUSTOMER/ORDER//ODATE/text()').getStringVal() IS NULL;
+Display the date on which order 'O002' was placed.
+select p.CUST.extract('/CUSTOMER/ORDER[OID="O002"]/ODATE/text()').getStringVal()
+from Product p;
+Display the quantity of product 'Mouse' of order 'O001' as numeric.
+Select
+p.CUST.extract('/CUSTOMER/ORDER[OID="O001"]/ORDER_ITEM[NAME="Mous
+e"]/QTY/text()').getNumberVal() “QUANTITY" from Product p;
+Display the quantity of product 'P001' of order 'O001' without using extract()
+function
+Select
+p.CUST.extractValue(CUST,'/CUSTOMER/ORDER[OID="O001"]/ORDER_ITEM[N
+AME="Mouse"]/QTY') “QUANTITY" from Product p;
+Extract dates of the orders for which they exist
+select p.CUST.extract('/CUSTOMER/ORDER/ODATE/text()').getStringVal() from
+Product p where p.CUST.extract('/CUSTOMER/ORDER/ODATE/text()') IS NOT
+NULL;
+Title(b): XML Databases
+Question:-
+Create a table employee having dept_id as number datatype and employee_spec as XML
+datatype (XMLType).The employee_spec is a schema with attributes emp id, name,
+email, acc_no, managerEmail, dateOf Joning .Insert 10 tuples into employee table. Fire
+the following queries on XML database.
+a) Retrieve the names of employees.
+b) Retrieve the acc_no of employees.
+c) Retrieve the names, acc_no, email of employees.
+d) Update the 3rd record from the table and display the name of an employee.
+e) Delete 4th record from the table.
+create table employee
+ (dept_id number(5),
+employee_spec xmltype) 
+ /
+Table created.
+Inserting Records Into Table Employee
+SQL> insert into employee
+ 2 values(001,
+ 3 xmltype('<emp id="1">
+ 4 <name>jignisha</name>
+ 5 <email>jigi@rediffmail.com</email>
+ 6 <acc_no>1234</acc_no>
+ 7 <mgremail>abc@yahoo.com</mgremail>
+ 8 <doj>23-jul-2005</doj>
+ 9 </emp>'))
+ 10 /
+1 row created.
+Query 1:
+ Retrieve the names of employee.
+SQL Statement:-
+SQL> select e.employee_spec.extract('emp/name/text()').getStringVal()
+ 2 "Employee_Name"
+ 3 from employee e
+ 4 /
+Query 2:-
+ Retrieve the acc_no of employee.
+SQL Statement:-
+SQL> select e.employee_spec.extract('emp/acc_no/text()').getStringVal()
+ 2 "Employee Account-No"
+ 3 from employee e 
+ 4 /
+Query 3:-
+ Retrieve the names, acc_no, email of employees.
+SQL Statement:-
+SQL> select
+ 2 e.employee_spec.extract('emp/name/text()').getStringVal(),
+ 3 e.employee_spec.extract('emp/acc_no/text()').getStringVal(),
+ 4 e.employee_spec.extract('emp/email/text()').getStringVal()
+ 5 from employee e
+ 6 /
+Query 4:-
+ Update the 3rd record from the table and display the name of an employee.
+SQL Statement:-
+SQL> update employee e set employee_spec = xmltype
+ 2 ('<emp id="3">
+ 3 <name>Megha Sawant</name>
+ 4 </emp>')
+ 5 where e.employee_spec.extract('//acc_no/text()').getStringVal()='3456'
+ 6 /
+Query 5:-
+ Delete 4 th record from the table.
+SQL Statement:-
+SQL> delete from employee e
+ 2 where e.employee_spec.extract('//name/text()').getStringVal()='jyotsna'
+ 3 /
+Title (c): XML Databases
+Question:-
+Create a table candixml having candidate id as varchar datatype and resume as xml
+datatype. 
+The resume is a schema with attributes address, skill à language skill à a) comp skill
+b) os skill, experience à a) programmer b) project manager, and objectives.
+Insert 5 tuples into the table.
+a) Fire the following queries on xml databases.
+ b) List the candidate name who is good in java and having experience more than 5
+ years.
+ c) List candidate having project manager level experience.
+ d) List name and skill of all candidate.
+ e) Delete record for address = 'andheri'.
+ f) Update any record.
+SQL> create table candixml
+ 2 (id varchar2(10),
+ 3 resume xmltype);
+Table created.
+SQL> insert into candixml values('a001',
+ 2 xmltype(
+ 3 '<emp id="1">
+ 4 <name>jigi</name>
+ 5 <address>virar</address>
+ 6 <skill>
+ 7 <compskill>
+ 8 <lang>java</lang>
+ 9 <os>linux</os>
+ 10 </compskill>
+ 11 </skill>
+ 12 <expr>
+ 13 <programer>3</programer>
+ 14 <proj_mgr>1</proj_mgr>
+ 15 </expr>
+ 16 <objective>to become a good programer</objective>
+ 17 </emp>'))
+ 18 /
+Query 1:-
+ List the candidate name who is good in java and having experience more than 5
+ years.
+SQL Statement:-
+SQL> select e.resume.getClobval() "employee spec"
+ 2 from candixml e where 
+ 3 e.resume.extract('//skill/compskill/lang/text()').getStringVal()='java'
+ 4 and e.resume.extract('//expr/programer/text()').getStringVal()='5'
+ 5 /
+Query 2:-
+ List candidate having project manager level experience.
+SQL Statement:-
+SQL>
+ 1 select e.resume.extract('emp/name/text()').getStringVal() "EName"
+ 2 from candixml e
+ 3 where e.resume.existsNode('/emp/expr[proj_mgr>="1"]') = 1
+ 4 /
+Query 3:-
+ List name and skill of all candidate.
+SQL Statement:-
+SQL>
+ 1 select
+ 2 e.resume.extract('emp/name/text()').getStringVal() "EName",
+ 3 e.resume.extract('emp/skill/compskill/lang/text()').getStringVal() "ESkillLang",
+ 4 e.resume.extract('emp/skill/compskill/os/text()').getStringVal() "ESkillNw"
+ 5 from candixml e
+ 6 /
+Query 4:-
+ Delete record for address = 'andheri'.
+SQL Statement:-
+SQL>
+ 1 delete from candixml e
+ 2 where e.resume.extract('//address/text()').getStringVal()
+ 3 ='andheri'
+ 4 /
+Query 5:-
+ Update any record. 
+SQL Statement:-
+SQL>
+ 1 update candixml e
+ 2 set resume=XMLType('<emp><name>jignisha</name></emp>')
+ 3 where id='a001'
+ 4 / 
