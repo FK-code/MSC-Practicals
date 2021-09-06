@@ -1,17 +1,17 @@
 import socket
 import hashlib
 
-msg=input("Enter Message :\t")
+msg=input(" Enter Message :\t")
 msghash=hashlib.md5(msg.encode()).hexdigest()
 
 s=socket.socket()
-print("socket created")
+print(" socket created")
 
 host=socket.gethostname()
 port=12345
 
 s.connect((host,port))
-print(f"connected to {host}")
+print(f" connected to {host}")
 
 
 while True:

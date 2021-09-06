@@ -1,7 +1,8 @@
 1)Create a table Product with ID and XML Document for Customer's order.
 
-Create table Product(ID varchar2(10),CUST XMLTYPE);
-// inserting values
+Create table Product(ID varchar2(10) PRIMARY KEY,CUST XMLTYPE);
+// inserting values 
+//row 1
 insert into Product values(
 1,XMLTYPE('
 <CUSTOMER>
@@ -35,3 +36,171 @@ insert into Product values(
 </CUSTOMER>
 ')
 );
+
+//row 2
+insert into Product values(
+2,XMLTYPE('
+<CUSTOMER>
+<CID>C002</CID>
+<NAME>Sam</NAME>
+<CITY>MUMBAI</CITY>
+<ORDER>
+ <OID>O011</OID>
+ <ODATE>25/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>Mouse</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>KeyBoard</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+</ORDER>
+<ORDER>
+ <OID>O012</OID>
+ <ODATE>31/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>PenDrive</NAME>
+ <QTY>2</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>Modem</NAME>
+ <QTY>10</QTY>
+ </ORDER_ITEM> 
+</ORDER>
+</CUSTOMER>
+')
+);
+// row 3
+insert into Product values(
+3,XMLTYPE('
+<CUSTOMER>
+<CID>C003</CID>
+<NAME>Tom</NAME>
+<CITY>MUMBAI</CITY>
+<ORDER>
+ <OID>O031</OID>
+ <ODATE>25/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>Mouse</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>KeyBoard</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+</ORDER>
+<ORDER>
+ <OID>O032</OID>
+ <ODATE>31/01/2006</ODATE>
+ <ORDER_ITEM>
+ <NAME>PenDrive</NAME>
+ <QTY>2</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>Modem</NAME>
+ <QTY>10</QTY>
+ </ORDER_ITEM> 
+</ORDER>
+</CUSTOMER>
+')
+);
+
+3. Extract the XML fragment for order items for order no 'O001'
+select p.CUST.extract('/CUSTOMER/ORDER[OID="O001"]').getStringVal() "Orders" from Product p;
+
+4. Extract XML Fragment for orders of customers with customer_id='C0001'
+select p.CUST.extract('/CUSTOMER[CID==C001]').getStringVal() "Orders" from Product p;
+
+5. Insert a row with id=5 and nothing for Customers orders.
+insert into Product values(
+5,XMLTYPE('
+<CUSTOMER>
+<CID>C005</CID>
+<NAME>John</NAME>
+<CITY>MUMBAI</CITY>
+</CUSTOMER>
+')
+);
+
+6. Insert a row with no order date for on order. 
+insert into Product values(
+6,XMLTYPE('
+<CUSTOMER>
+<CID>C006</CID>
+<NAME>Saly</NAME>
+<CITY>MUMBAI</CITY>
+<ORDER>
+ <OID>O061</OID>
+ <ODATE></ODATE>
+ <ORDER_ITEM>
+ <NAME>Mouse</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>KeyBoard</NAME>
+ <QTY>25</QTY>
+ </ORDER_ITEM>
+</ORDER>
+<ORDER>
+ <OID>O062</OID>
+ <ODATE></ODATE>
+ <ORDER_ITEM>
+ <NAME>PenDrive</NAME>
+ <QTY>2</QTY>
+ </ORDER_ITEM>
+ <ORDER_ITEM>
+ <NAME>Modem</NAME>
+ <QTY>10</QTY>
+ </ORDER_ITEM> 
+</ORDER>
+</CUSTOMER>
+')
+);
+
+1. Select the rows with NULL in customers order node
+
+select * from Product p where
+p.CUST.extract('/CUSTOMER/ORDER').getStringVal() IS NULL;
+
+2. Select a row with no order date:
+select * from Product p where
+p.CUST.extract('/CUSTOMER/ORDER/ODATE/text()').getStringVal() IS NULL;
+
+3. Display the date on which order 'O001' was placed.
+select p.CUST.extract('/CUSTOMER/ORDER[OID="O002"]/ODATE/text()').getStringVal()
+from Product p;
+
+4. Display the quantity of product 'Mouse' of order 'O001' as numeric.
+Select p.CUST.extract('/CUSTOMER/ORDER[OID="O001"]/ORDER_ITEM[NAME="Mouse"]/QTY/text()').getNumberVal() “QUANTITY" from Product p;
+
+5. Display the quantity of product 'Mouse' of order 'O001' without using extract() function
+SELECT EXTRACTVALUE(CUST, '/CUSTOMER/ORDER[OID="O001"]/ORDER_ITEM[NAME="Mouse"]/QTY') "QUANTITY" FROM Product e;
+
+6. Display the items ordered in the order 'O002' using ExtractValue() function.What is your observation Explain Why?
+select p.CUST.extract('CUSTOMER/ORDER[OID="O002"]/ORDER_ITEM').getStringVal() "ORDER_ITEM" from Product p;
+
+7. Extract dates of the orders for which they exist
+select p.CUST.extract('/CUSTOMER/ORDER/ODATE/text()').getStringVal() from
+Product p where p.CUST.extract('/CUSTOMER/ORDER/ODATE/text()') IS NOT
+NULL;
+
+Title(b): XML Databases
+Question:-
+Create a table employee having dept_id as number datatype and employee_spec as XML
+datatype (XMLType).The employee_spec is a schema with attributes emp id, name,
+email, acc_no, managerEmail, dateOf Joning .Insert 10 tuples into employee table. Fire
+the following queries on XML database.
+1)creating table
+create table employee(dept_id number(5) PRIMARY KEY,employee_spec xmltype);
+
+2) inserting records
+insert into employee
+values(001,
+xmltype('<emp id="1">
+<name>Adam</name>
+<email>adam@mail.com</email>
+<acc_no>1234</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>23-jul-2005</doj>
+</emp>'));
