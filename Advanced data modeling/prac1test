@@ -204,3 +204,278 @@ xmltype('<emp id="1">
 <mgremail>abc@yahoo.com</mgremail>
 <doj>23-jul-2005</doj>
 </emp>'));
+
+insert into employee
+values(002,
+xmltype('<emp id="2">
+<name>Bob</name>
+<email>bob@mail.com</email>
+<acc_no>5678</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>23-jul-2005</doj>
+</emp>'));
+
+insert into employee
+values(003,
+xmltype('<emp id="3">
+<name>Cybil</name>
+<email>cybil@mail.com</email>
+<acc_no>9012</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>13-jul-2005</doj>
+</emp>'));
+
+insert into employee
+values(004,
+xmltype('<emp id="4">
+<name>Dane</name>
+<email>dane@mail.com</email>
+<acc_no>3456</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>13-jul-2005</doj>
+</emp>'));
+
+insert into employee
+values(005,
+xmltype('<emp id="5">
+<name>Emily</name>
+<email>emily@mail.com</email>
+<acc_no>7890</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>24-jul-2005</doj>
+</emp>'));
+
+insert into employee
+values(006,
+xmltype('<emp id="6">
+<name>Frank</name>
+<email>frank@mail.com</email>
+<acc_no>9876</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>24-jul-2005</doj>
+</emp>'));
+
+insert into employee
+values(007,
+xmltype('<emp id="7">
+<name>Gorge</name>
+<email>gorge@mail.com</email>
+<acc_no>5432</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>23-jul-2004</doj>
+</emp>'));
+
+insert into employee
+values(008,
+xmltype('<emp id="8">
+<name>Hank</name>
+<email>hank@mail.com</email>
+<acc_no>1098</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>23-jul-2004</doj>
+</emp>'));
+
+insert into employee
+values(009,
+xmltype('<emp id="9">
+<name>Igor</name>
+<email>igor@mail.com</email>
+<acc_no>7654</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>23-jul-2005</doj>
+</emp>'));
+
+insert into employee
+values(010,
+xmltype('<emp id="10">
+<name>Jack</name>
+<email>jack@mail.com</email>
+<acc_no>3210</acc_no>
+<mgremail>abc@yahoo.com</mgremail>
+<doj>23-jul-2005</doj>
+</emp>'));
+
+Query 1:
+ Retrieve the names of employee.
+SQL Statement:-
+select e.employee_spec.extract('emp/name/text()').getStringVal() "Employee_Name" from employee e;
+
+Query 2:-
+ Retrieve the acc_no of employee.
+SQL Statement:-
+select e.employee_spec.extract('emp/acc_no/text()').getStringVal() "Employee Account-No" from employee e;
+
+Query 3:-
+ Retrieve the names, acc_no, email of employees.
+SQL Statement:-
+select e.employee_spec.extract('emp/name/text()').getStringVal(), e.employee_spec.extract('emp/acc_no/text()').getStringVal(), e.employee_spec.extract('emp/email/text()').getStringVal() from employee e;
+
+Query 4:-
+ Update the 3rd record from the table and display the name of an employee.
+SQL Statement:-
+update employee e set employee_spec = xmltype ('<emp id="3"> <name>Tanmay Gurav</name> </emp>') where e.employee_spec.extract('//acc_no/text()').getStringVal()='9012';
+
+//Display pending
+select 
+e.employee_spec.extract('emp/name/text()').getStringVal() 
+from employee e 
+where dept_id=003;
+
+Query 5:-
+ Delete 4 th record from the table.
+SQL Statement:-
+delete from employee e where e.employee_spec.extract('//name/text()').getStringVal()='Dane';
+
+Question:-
+Create a table candixml having candidate id as varchar datatype and resume as xml
+datatype. 
+The resume is a schema with attributes address, skill à language skill à a) comp skill
+b) os skill, experience à a) programmer b) project manager, and objectives.
+Insert 5 tuples into the table.
+a) Fire the following queries on xml databases.
+b) List the candidate name who is good in java and having experience more than 5
+years.
+c) List candidate having project manager level experience.
+d) List name and skill of all candidate.
+e) Delete record for address = 'andheri'.
+f) Update any record.
+
+create table candixml (id varchar2(10) PRIMARY KEY, resume xmltype);
+
+inserting records
+
+insert into candixml values(001,
+xmltype(
+'<emp id="1">
+<name>Adam</name>
+<address>Aplace</address>
+<skill>
+<compskill>
+<lang>java</lang>
+<os>linux</os>
+</compskill>
+</skill>
+<expr>
+<programer>3</programer>
+<proj_mgr>1</proj_mgr>
+</expr>
+<objective>to become a good programer</objective>
+</emp>'));
+
+insert into candixml values(002,
+xmltype(
+'<emp id="2">
+<name>Bob</name>
+<address>Bplace</address>
+<skill>
+<compskill>
+<lang>python</lang>
+<os>linux</os>
+</compskill>
+</skill>
+<expr>
+<programer>2</programer>
+<proj_mgr>1</proj_mgr>
+</expr>
+<objective>to become a good programer</objective>
+</emp>'));
+
+insert into candixml values(003,
+xmltype(
+'<emp id="3">
+<name>Cybil</name>
+<address>Cplace</address>
+<skill>
+<compskill>
+<lang>C++</lang>
+<os>linux</os>
+</compskill>
+</skill>
+<expr>
+<programer>6</programer>
+<proj_mgr>1</proj_mgr>
+</expr>
+<objective>to become a good programer</objective>
+</emp>'));
+
+insert into candixml values(004,
+xmltype(
+'<emp id="4">
+<name>Dane</name>
+<address>Dplace</address>
+<skill>
+<compskill>
+<lang>javascript</lang>
+<os>windows</os>
+</compskill>
+</skill>
+<expr>
+<programer>3</programer>
+<proj_mgr>1</proj_mgr>
+</expr>
+<objective>to become a good programer</objective>
+</emp>'));
+
+insert into candixml values(005,
+xmltype(
+'<emp id="5">
+<name>Emily</name>
+<address>Eplace</address>
+<skill>
+<compskill>
+<lang>ruby</lang>
+<os>linux</os>
+</compskill>
+</skill>
+<expr>
+<programer>3</programer>
+<proj_mgr>1</proj_mgr>
+</expr>
+<objective>to become a good programer</objective>
+</emp>'));
+
+insert into candixml values(006,
+xmltype(
+'<emp id="6">
+<name>Frank</name>
+<address>Fplace</address>
+<skill>
+<compskill>
+<lang>java</lang>
+<os>linux</os>
+</compskill>
+</skill>
+<expr>
+<programer>5</programer>
+<proj_mgr>1</proj_mgr>
+</expr>
+<objective>to become a good programer</objective>
+</emp>'));
+
+Query 1:-
+ List the candidate name who is good in java and having experience more than 5
+ years.
+SQL Statement:-
+select e.resume.getClobval() "employee spec" from candixml e where e.resume.extract('//skill/compskill/lang/text()').getStringVal()='java' and e.resume.extract('//expr/programer/text()').getStringVal()>=5;
+
+Query 2:-
+ List candidate having project manager level experience.
+SQL Statement:-
+select e.resume.extract('emp/name/text()').getStringVal() "EName" from candixml e where e.resume.existsNode('/emp/expr[proj_mgr>="1"]') = 1;
+
+Query 3:-
+ List name and skill of all candidate.
+SQL Statement:-
+select e.resume.extract('emp/name/text()').getStringVal() "EName",
+e.resume.extract('emp/skill/compskill/lang/text()').getStringVal() "ESkillLang",
+e.resume.extract('emp/skill/compskill/os/text()').getStringVal() "ESkillNw" from candixml e;
+
+Query 4:-
+ Delete record for address = 'andheri'.
+SQL Statement:-
+delete from candixml e where e.resume.extract('//address/text()').getStringVal() ='Fplace';
+
+Query 5:-
+ Update any record. 
+SQL Statement:-
+update candixml e set resume=XMLType('<emp><name>Tanmay</name></emp>') where id='001';
