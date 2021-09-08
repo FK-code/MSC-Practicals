@@ -461,7 +461,9 @@ select e.resume.getClobval() "employee spec" from candixml e where e.resume.extr
 Query 2:-
  List candidate having project manager level experience.
 SQL Statement:-
-select e.resume.extract('emp/name/text()').getStringVal() "EName" from candixml e where e.resume.existsNode('/emp/expr[proj_mgr>="1"]') = 1;
+select e.resume.extract('emp/name/text()').getStringVal() "EName" 
+from candixml e 
+where e.resume.existsNode('/emp/expr[proj_mgr>="1"]') = 1;
 
 Query 3:-
  List name and skill of all candidate.

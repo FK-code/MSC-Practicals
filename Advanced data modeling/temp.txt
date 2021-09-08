@@ -1,0 +1,240 @@
+Email
+
+Email is probably the type of semi-structured data we’re all most familiar with because we use it on a daily basis. 
+Email messages contain structured data like name, email address, recipient, date, time, etc., and they are also organized 
+into folders, like Inbox, Sent, Trash, etc.
+
+create table emailtb(id varchar2(4) PRIMARY KEY, email XMLTYPE);
+
+insert into emailtb values (0001,XMLTYPE('
+<Email>
+    <EID>0001</EID>
+    <sender_name>Adam</sender_name>
+    <sender_email_adr>adam@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 1</subject>
+    <date>12/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <Inbox></Inbox>
+        <important></important>
+        <stared></stared>
+        <draft></draft>
+    </folders>
+    <category>
+        <social></social>
+        <Update></Update>
+        <forums></forums>
+    </category>
+</Email>
+'))
+
+insert into emailtb values (0002,XMLTYPE('
+<Email>
+    <EID>0002</EID>
+    <sender_name>Bob</sender_name>
+    <sender_email_adr>bob@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 2</subject>
+    <date>12/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <Inbox></Inbox>
+        <important></important>
+        <stared></stared>
+    </folders>
+</Email>
+'));
+
+insert into emailtb values (0003,XMLTYPE('
+<Email>
+    <EID>0003</EID>
+    <sender_name>Cybil</sender_name>
+    <sender_email_adr>cybil@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 3</subject>
+    <date>12/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <Inbox></Inbox>
+        <important></important>
+        <stared></stared>
+    </folders>
+</Email>
+'));
+
+insert into emailtb values (0004,XMLTYPE('
+<Email>
+    <EID>0004</EID>
+    <sender_name>Eve</sender_name>
+    <sender_email_adr>eve@mail.com</sender_email_adr>
+    <recipient_name>Adam</recipient_name>
+    <recipient_email_adr>adam@mail.com</recipient_email_adr>
+    <recipient_name>Cybil</recipient_name>
+    <recipient_email_adr>cybil@mail.com</recipient_email_adr>
+    <subject>Subject line 4</subject>
+    <date>13/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <Inbox></Inbox>
+        <important></important>
+        <stared></stared>
+        <draft></draft>
+        <spam></spam>
+    </folders>
+    <category>
+        <Update></Update>
+    </category>
+</Email>
+'));
+
+insert into emailtb values (0005,XMLTYPE('
+<Email>
+    <EID>0005</EID>
+    <sender_name>spam</sender_name>
+    <sender_email_adr>spam@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 5</subject>
+    <date>14/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <spam></spam>
+    </folders>
+</Email>
+'));
+
+insert into emailtb values (0006,XMLTYPE('
+<Email>
+    <EID>0006</EID>
+    <sender_name>spam</sender_name>
+    <sender_email_adr>spam@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 6</subject>
+    <date>14/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <spam></spam>
+    </folders>
+</Email>
+'));
+
+insert into emailtb values (0007,XMLTYPE('
+<Email>
+    <EID>0007</EID>
+    <sender_name>spam</sender_name>
+    <sender_email_adr>spam@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 7</subject>
+    <date>14/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <spam></spam>
+    </folders>
+</Email>
+'));
+
+insert into emailtb values (0008,XMLTYPE('
+<Email>
+    <EID>0008</EID>
+    <sender_name>Adam</sender_name>
+    <sender_email_adr>adam@mail.com</sender_email_adr>
+    <recipient_name>Eve</recipient_name>
+    <recipient_email_adr>eve@mail.com</recipient_email_adr>
+    <subject>Subject line 8</subject>
+    <date>12/05/2016</date>
+    <time>15:45</time>
+    <folders>
+        <Inbox></Inbox>
+        <important></important>
+    </folders>
+</Email>
+'));
+
+<Email>
+<EID></EID>
+<name></name>
+<email_adr></email_adr>
+<!-- no recipient -->
+<subject></subject>
+<date></date>
+<time></time>
+<folders>
+<Inbox></Inbox>
+<important></important>
+<draft></draft>
+</folders>
+</Email>
+
+<Email>
+<EID></EID>
+<name></name>
+<email_adr></email_adr>
+<recipient></recipient>
+<subject></subject>
+<date></date>
+<time></time>
+<folders>
+<Inbox></Inbox>
+<spam></spam>
+</folders>
+</Email>
+
+<!-- no folder -->
+
+<!-- category -->
+<category>
+<social></social>
+<Update></Update>
+<forums></forums>
+</category>
+
+
+
+
+select and delete all spam email>
+select e.email.extract('Email/sender_name/text()').getStringVal() "EName" 
+from emailtb e 
+where e.email.existsNode('/Email/folders/spam') = 1;
+
+delete from emailtb where e.email.existsNode('/Email/folders/spam') = 1;
+
+select all email from person ABC from date DD/MM/YYYY>
+select e.email.extract('Email/sender_name/text()').getStringVal() "Emails sent by person(s) on 12/05/2016" 
+from emailtb e
+where e.email.existsNode('Email[date="12/05/2016"]') = 1;
+
+update recipient to XYZ where subject is Ruia fest 
+
+select mail from sender ABC to XYZ>
+select e.email.extract('Email/subject/text()').getStringVal() "Subjects" 
+from emailtb e
+where e.email.existsNode('Email[sender_name="Adam"]') = 1 
+and e.email.existsNode('Email[recipient_name="Eve"]') = 1;
+
+select mail in inbox folder
+select mail sent on date DD/MM/YY 
+update date to dd/mm/yyyy where id is 0001>
+
+select all imp mail
+
+SQL> select e.email.extract('Email/subject/text()').getStringVal()
+  2  from emailtb e
+  3  where e.email.existsnode('/Email/folders/important') = 1;
+
+  
+update emailtb SET email =
+UPDATEXML(email,'Email/date/text()',13/06/2007)
+where id = 0001;
+
+UPDATE warehouses SET warehouse_spec =
+   UPDATEXML(warehouse_spec,
+   '/Warehouse/Docks/text()',4)
+   WHERE warehouse_name = 'San Francisco';
+
+select all the mail received to ABC from XYZ on date dd/mm/yyyy
