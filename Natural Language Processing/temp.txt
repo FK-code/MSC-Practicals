@@ -1,0 +1,11 @@
+this is list comprehension 
+dp=[[0 for x in range(n + 1)] for x in range(m + 1)]
+
+this translates to
+np=[]
+inp=[]
+for x in range(n+1):
+    inp.append(0)
+    if x in range(m+1):
+        np.append(inp)
+        

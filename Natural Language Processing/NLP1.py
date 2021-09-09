@@ -1,5 +1,5 @@
-import nltk
-from nltk import punkt
+# import nltk
+# from nltk import punkt
 
 
 #sentence token
