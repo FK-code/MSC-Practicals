@@ -1,0 +1,28 @@
+Double link list  <done>
+
+2
+
+Data Integrity
+a) Generation of hash <done>
+b) Verification of hash over network <done>
+
+3
+
+Cryptography
+c) Key Generation  <done>
+d) Digital Signature <done>
+
+4
+
+Blockchain Implementation
+a) Block generation  <current>
+b) Blockchain generation
+
+5 Blockchain DAPP
+6 Public Blockchain
+
+a) Ethereum Smart Contracts
+
+7
+
+Case Study

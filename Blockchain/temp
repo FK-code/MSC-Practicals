@@ -97,3 +97,24 @@ else:
 #     print('DES failed')
 # else:
 #     print(f'Plain text from DES: {plaintext}')
+
+circle
+SDO_GTYPE 2003
+SDO_SRID NULL
+SDO_POINT NULL
+SDO_ELEM_INFO (1,2003, 4)
+SDO_ORDINATES ( 8,2 , 9,8.5 , 10,9 , 9,10.5 , )
+
+rectangle (orange)
+SDO_GTYPE 2003
+SDO_SRID NULL
+SDO_POINT NULL
+SDO_ELEM_INFO (1,1003, 3)
+SDO_ORDINATES (1,7 , 1,1 , 5,1 )
+
+polygon (blue)
+SDO_GTYPE 2003
+SDO_SRID NULL
+SDO_POINT NULL
+SDO_ELEM_INFO (1,1003, 1)
+SDO_ORDINATES (1,7 , 1,1 , 5,1 )

@@ -481,3 +481,34 @@ Query 5:-
  Update any record. 
 SQL Statement:-
 update candixml e set resume=XMLType('<emp><name>Tanmay</name></emp>') where id='001';
+
+<patient>
+<doctor>
+    <doctor_name></doctor_name>
+    <specization></specization>
+</doctor>
+<deisease>
+    <diesea1></diesea1>
+</deisease>
+<medicine>
+    <med1></med1>
+</medicine>
+<location>
+    <from></from>
+    <admmited to></admmited>
+</location>
+</patient>
+
+
+While specifying a char or text of a xml attribute, enclose the text in double 
+inverted commas. This explicitly says that the data we are quering for is text.
+
+IS NULL and IS NOT NULL can be helpfull in finding if the data exists at a given
+attribute in the table.
+
+existnode() only returns output as 1 or 0
+
+AND and OR operators can be used modify the query condition
+
+the output of a select query can be given a header in char numeric or
+special char format. 
