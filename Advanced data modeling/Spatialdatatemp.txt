@@ -1,0 +1,156 @@
+-- Create a table for cola (soft drink) markets in a
+-- given geography (such as city or state).
+-- Each row will be an area of interest for a specific
+-- cola (for example, where the cola is most preferred
+-- by residents, where the manufacturer believes the
+-- cola has growth potential, and so on).
+
+CREATE TABLE cola_markets (
+  mkt_id NUMBER PRIMARY KEY,
+  name VARCHAR2(32),
+  shape MDSYS.SDO_GEOMETRY);
+
+-- The next INSERT statement creates an area of interest for 
+-- Cola A. This area happens to be a rectangle.
+-- The area could represent any user-defined criterion: for
+-- example, where Cola A is the preferred drink, where
+-- Cola A is under competitive pressure, where Cola A
+-- has strong growth potential, and so on.
+ 
+
+MDSYS.SDO_GEOMETRY(
+ SDO_GTYPE NUMBER, 
+ SDO_SRID NUMBER,
+ SDO_POINT SDO_POINT_TYPE,
+ SDO_ELEM_INFO SDO_ELEM_INFO_ARRAY,
+ SDO_ORDINATES SDO_ORDINATE_ARRAY
+)
+For a polygon with holes, enter the exterior boundary first, 
+followed by any interior boundaries.
+SDO_GTYPE:
+Given as > DLXX 
+D is the dimension of the object cna be 2,3,4
+L is the linear referencing measure dimension for 3D linear referencing sytem
+0 for spatial and graph default 
+XX is Geometry type > can be
+00 > unknown Geometry
+01 > point 
+02 > line or curve
+03 > polygon or surface (multiple ploygon or 3d polygon, all points on same plain)
+04 > collection (super set of all other types)
+05 > multipoint (superset of point(02))
+06 > multipline or multipcurve (superset of line and curve)
+07 > multipolygon or multisurface
+08 > solid (consist of multiple surfaces and enclosed in 3D space (cuboid or frustum))
+09 > multisolid (superset of solid)
+
+SDO_SRID:
+Used to identify a coordinate system (spatial reference system) 
+to be associated with the geometry
+> null for no coordinate system
+
+SDO_POINT:
+CREATE TYPE sdo_point_type AS OBJECT (
+   X NUMBER,
+   Y NUMBER,
+   Z NUMBER);
+CREATE TYPE sdo_elem_info_array AS VARRAY (1048576) of NUMBER;
+CREATE TYPE sdo_ordinate_array AS VARRAY (1048576) of NUMBER;
+
+if SDO_ELEM_INFO and SDO_ORDINATES are both null then the X, Y, and Z values 
+are considered to be the coordinates for a point geometry
+
+SDO_ELM_INFO:
+Used to know how to interpret the ordinates in SDO_ORDINATES
+Defined in Triplets (set of 3 numbers)
+
+1. SDO_STARTING_OFFSET -- Indicates the offset within the 
+SDO_ORDINATES array where the first ordinate for this element is stored
+SDO_ELM _INFO > 1st number is location of the 1st ordinate of element
+indexing (location) value starts from 1 in the array
+
+2. SDO_ETYPE -- Indicates the type of the element.
+Valid values >
+SDO_ETYPE //> used for 
+0 > Type zero element (TODO : read more > zero element)
+1 > Point , Point cluster with n points
+2 > Lines(straight lines or arcs), NURBS (TODO : read more > NURBS)
+1003 or 2003 > polygon, rectangle, circle 
+4 > compound line string (consist of straight line and circular arc segments)
+1005 or 2005 > compound polygon (consist of straight line and circular arc segments)
+1006 or 2006 > surface consisting of 1 or multiple polygon,
+                edge sharing between max 2 polygons
+1007 >solid
+
+Note : 
+1003: exterior polygon ring (must be specified in counterclockwise order)
+2003: interior polygon ring (must be specified in clockwise order)
+1005: exterior polygon ring (must be specified in counterclockwise order)
+2005: interior polygon ring (must be specified in clockwise order)
+
+doubt > If a geometry consists of more than one element, then the last ordinate for an element is always one less than the starting offset for the next element. The last element in the geometry is described by the ordinates from its starting offset to the end of the SDO_ORDINATES varying length array.
+
+3. SDO_INTERPRETATION
+Used to interpret element type (compound or not), depended on ETYPE (previous value))
+Valid values > 
+SDO_ETYPE //, SDO_INTERPRETATION //> Used for
+0,(num value) > Type zero element
+1,1 > point
+1,0 > orientate point
+1,n > n is number of points in point cluster and n>1
+2,1 > multiple lines connected by straight lines
+2,2 > multiple connected circular arcs
+2,3 > NURBS (read more)
+DL03,1 > polygon with straight lines (enter cyclic points)
+DL03,2 > polygon with circular arcs (enter cyclic points)
+DL03,3 > rectangle (two points = lower left and upper right)
+DL04,4 > circle (3 points)
+4,n > n is number of subelements in compound string
+DL05,n > n is number of subelements in compound polygon
+DL06,n > n is number of polygons that makeup the surface
+DL07,n > n can be 1 or 3 (n=3, only 2 3D points are required to define the element) (read more)
+
+
+SDO_ORDINATES:
+Used to give coordinates that define the boundary of the spatial object/element
+
+
+Inserting values into table
+
+INSERT INTO table_name VALUES(
+    row / index / element number,
+    'Nmae_of element'(as string),
+    MDSYS.SDO_GEOMETRY(
+        SDO_GTYPE, (num)
+        SDO_SRID, (num or null)
+        SDO_POINT_TYPE, (num or null)
+        MDSYS.SDO_ELEM_INFO_ARRAY, (array)
+        MDSYS.SDO_ORDINATE_ARRAY (array)
+    )
+);
+
+INSERT INTO cola_markets VALUES(
+    1,
+    'cola_a',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(1,1 , 5,7)
+    )
+);
+
+INSERT INTO cola_markets VALUES(
+    2,
+    'cola_b',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(5,1 , 8,1 , 8,6 , 5,7 ,5,1)
+    )
+);
+
+done till here in oracle
