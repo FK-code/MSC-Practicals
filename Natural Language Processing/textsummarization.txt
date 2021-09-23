@@ -1,0 +1,20 @@
+select a paragarph
+
+remove stop words
+
+find frequency of words and select the highest
+
+weight rest of the words acc to the highest frequency
+if max =10 then rest n = n/10
+
+extract indivdual sentences.
+
+score them acc to sum of weights of each words (excluding stop words)
+
+arrange in decending order
+
+extract the highest scroing one's as summary 
+
+how to get the number of sentences that should be extracted ?
+ratio of no. of actual sentences (elcuding sentences with only stopwords)
+to no. summary sentences ?

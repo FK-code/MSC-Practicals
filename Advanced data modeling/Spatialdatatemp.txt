@@ -5,6 +5,7 @@
 -- by residents, where the manufacturer believes the
 -- cola has growth potential, and so on).
 
+QUERY :>
 CREATE TABLE cola_markets (
   mkt_id NUMBER PRIMARY KEY,
   name VARCHAR2(32),
@@ -83,6 +84,7 @@ SDO_ETYPE //> used for
 1007 >solid
 
 Note : 
+here first digit represents exterior > 1 or interior > 2 
 1003: exterior polygon ring (must be specified in counterclockwise order)
 2003: interior polygon ring (must be specified in clockwise order)
 1005: exterior polygon ring (must be specified in counterclockwise order)
@@ -116,7 +118,7 @@ Used to give coordinates that define the boundary of the spatial object/element
 
 
 Inserting values into table
-
+QUERY :>
 INSERT INTO table_name VALUES(
     row / index / element number,
     'Nmae_of element'(as string),
@@ -154,3 +156,266 @@ INSERT INTO cola_markets VALUES(
 );
 
 done till here in oracle
+
+INSERT INTO cola_markets VALUES(
+    3,
+    'cola_c',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(3,3 , 6,3 , 6,5 , 4,5 , 3,3)
+    )
+);
+
+INSERT INTO cola_markets VALUES(
+    4,
+    'cola_d',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,4),
+        MDSYS.SDO_ORDINATE_ARRAY(8,7 , 10,9 , 8,11)
+    )
+);
+
+UPDATE METADATA VIEW 
+This is required before the Spatial index can be created.
+
+syntax
+
+INSERT INTO USER_SDO_GEOM_METADATA VALUES(
+  TABLE_NAME   VARCHAR2(32),
+  COLUMN_NAME  VARCHAR2(32),
+  MDSYS.SDO_DIM_ARRAY (SDO_DIM_ARRAY),
+  SRID         NUMBER
+);
+
+MDSYS.SDO_DIM_ARRAY contians elements named as 
+MDSYS.SDO_DIM_ELEMENT and they are defined as follows:
+
+MDSYS.SDO_DIM_ELEMENT(
+    SDO_DIMNAME VARCHAR2(64),
+    SDO_LB NUMBER,  --lower bound 
+    SDO_UB NUMBER,  -- upper bound   
+    SDO_TOLERANCE NUMBER
+);
+The SDO_DIM_ARRAY instance is of size n if there are n dimensions. 
+That is, DIMINFO contains 2 SDO_DIM_ELEMENT instances for 2D geometries, 
+3 instances for 3D geometries, and 4 instances for 4D geometries.
+
+
+SDO_LB : 
+start point of the coordinate system?
+SDO_UB : 
+end point of coordinate system?
+
+SDO_TOLERANCE:
+The tolerance value is less than the shortest distance between any two sides in any polygon.
+Moreover, if you encounter "invalid geometry" errors with inserted or updated geometries, 
+and if the geometries are in fact valid, consider increasing the precision of the tolerance value
+
+QUERY :>
+
+INSERT INTO USER_SDO_GEOM_METADATA VALUES (
+  'cola_markets',
+  'shape',
+  MDSYS.SDO_DIM_ARRAY(   
+    MDSYS.SDO_DIM_ELEMENT('X', 0, 20, 0.005),
+    MDSYS.SDO_DIM_ELEMENT('Y', 0, 20, 0.005)
+     ),
+  NULL
+);
+
+CREATE THE SPATIAL INDEX
+
+syntax
+CREATE INDEX index_name
+ON table_name(column_name)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX
+eg
+
+CREATE INDEX cola_spatial_idx
+ON cola_markets(shape)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX
+PARAMETERS('SDO_LEVEL = 8');
+
+SOME SPATIAL QUERIES
+
+Notes : 
+Table names and column names get converted to upper case letters while saving.
+queries are not case sensitive > data in a row is case sensitive
+
+1. Return the topological intersection of two geometries.
+
+SDO_INTERSECTION syntax :
+
+SDO_GEOM.SDO_INTERSECTION(     
+  geom1  IN SDO_GEOMETRY,      
+  dim1   IN SDO_DIM_ARRAY,      
+  geom2  IN SDO_GEOMETRY,      
+  dim2   IN SDO_DIM_ARRAY       
+)
+
+or
+
+SDO_GEOM.SDO_INTERSECTION(
+    geom1  IN SDO_GEOMETRY,
+    geom2  IN SDO_GEOMETRY,      
+    tolerance IN NUMBER
+)
+
+SELECT SDO_GEOM.SDO_INTERSECTION(c_a.shape, m.diminfo, c_c.shape, m.diminfo)
+  FROM cola_markets c_a, cola_markets c_c, user_sdo_geom_metadata m 
+  WHERE m.table_name = 'COLA_MARKETS' AND m.column_name = 'SHAPE' 
+  AND c_a.name = 'cola_a' AND c_c.name = 'cola_c';
+
+SELECT SDO_GEOM.SDO_INTERSECTION(C_A.SHAPE, M.DIMINFO, C_C.SHAPE, M.DIMINFO)
+FROM COLA_MARKETS C_A, COLA_MARKETS C_C, USER_SDO_GEOM_METADATA M
+WHERE M.TABLE_NAME='COLA_MARKETS' AND M.COLUMN_NAME = 'SHAPE'
+AND C_A.NAME='cola_a' AND C_C.NAME='cola_c';
+
+same query when USER_SDO_GEOM_METADATA is not specified > check by dropping meta data table
+
+SELECT SDO_GEOM.SDO_INTERSECTION(C_A.SHAPE,C_C.SHAPE,1)
+FROM COLA_MARKETS C_A, COLA_MARKETS C_C
+WHERE C_A.NAME='cola_a' AND C_C.NAME='cola_c';
+
+SELECT SDO_GEOM.SDO_INTERSECTION(C_A.SHAPE,C_C.SHAPE,1)
+FROM COLA_MARKETS C_A, COLA_MARKETS C_C;
+// 16 ROWS SELECTED
+
+
+SDO_GEOM.RELATE : 
+Examines two geometry objects to determine their spatial relationship.
+
+syntax
+SDO_GEOM.RELATE(     
+  geom1  IN SDO_GEOMETRY,      
+  dim1   IN SDO_DIM_ARRAY,      
+  mask   IN VARCHAR2,      
+  geom2  IN SDO_GEOMETRY,      
+  dim2   IN SDO_DIM_ARRAY       
+);
+
+OR 
+
+SDO_GEOM.RELATE(     
+  geom1  IN SDO_GEOMETRY,      
+  mask   IN VARCHAR2,      
+  geom2  IN SDO_GEOMETRY,      
+  tol    IN NUMBER       
+)
+mask keywords :
+DETERMINE: returns the one relationship keyword that best matches the geometries.
+ANYINTERACT: returns TRUE if the two geometries are not disjoint.
+CONTAINS: Returns CONTAINS if the second object is entirely within the first object and the object boundaries do not touch; otherwise, returns FALSE.
+COVEREDBY: Returns COVEREDBY if the first object is entirely within the second object and the object boundaries touch at one or more points; otherwise, returns FALSE.
+COVERS: Returns COVERS if the second object is entirely within the first object and the boundaries touch in one or more places; otherwise, returns FALSE.
+DISJOINT: Returns DISJOINT if the objects have no common boundary or interior points; otherwise, returns FALSE.
+EQUAL: Returns EQUAL if the objects share every point of their boundaries and interior, including any holes in the objects; otherwise, returns FALSE.
+INSIDE: Returns INSIDE if the first object is entirely within the second object and the object boundaries do not touch; otherwise, returns FALSE.
+ON: Returns ON if the boundary and interior of a line (the first object) is completely on the boundary of a polygon (the second object); otherwise, returns FALSE.
+OVERLAPBDYDISJOINT: Returns OVERLAPBDYDISJOINT if the objects overlap, but their boundaries do not interact; otherwise, returns FALSE.
+OVERLAPBDYINTERSECT: Returns OVERLAPBDYINTERSECT if the objects overlap, and their boundaries intersect in one or more places; otherwise, returns FALSE.
+TOUCH: Returns TOUCH if the two objects share a common boundary point, but no interior points; otherwise, returns FALSE.
+
+
+2. Do two geometries have any spatial relationship?
+
+SELECT SDO_GEOM.RELATE(c_b.shape, m.diminfo, 'anyinteract', 
+    c_d.shape, m.diminfo) 
+  FROM cola_markets c_b, cola_markets c_d, user_sdo_geom_metadata m 
+  WHERE m.table_name = 'COLA_MARKETS' AND m.column_name = 'SHAPE' 
+  AND c_b.name = 'cola_b' AND c_d.name = 'cola_d';
+
+SELECT SDO_GEOM.RELATE(c_b.shape, 'DETERMINE', c_c.shape) 
+  FROM cola_markets c_b, cola_markets c_c
+  WHERE c_b.name = 'cola_b' AND c_c.name = 'cola_c';
+
+3 .Return the areas of all cola markets.
+
+SDO_GEOM.SDO_AREA :
+Returns the area of a two-dimensional polygon.
+syntax
+SDO_GEOM.SDO_AREA(     
+  geom  IN SDO_GEOMETRY,      
+  dim   IN SDO_DIM_ARRAY     
+    [, unit  IN VARCHAR2]      
+
+);
+OR
+SDO_GEOM.SDO_AREA(     
+  geom  IN SDO_GEOMETRY,      
+  tol   IN NUMBER       
+    [, unit  IN VARCHAR2]      
+
+);
+
+SELECT c.name, SDO_GEOM.SDO_AREA(c.shape, m.diminfo) 
+  FROM cola_markets c, user_sdo_geom_metadata m 
+  WHERE m.table_name = 'COLA_MARKETS' AND m.column_name = 'SHAPE';
+
+SELECT name, SDO_GEOM.SDO_AREA(shape, 0.005) FROM cola_markets;
+
+4. Return the area of just cola_a.
+
+SELECT c.name, SDO_GEOM.SDO_AREA(c.shape, m.diminfo) 
+  FROM cola_markets c, user_sdo_geom_metadata m 
+  WHERE m.table_name = 'COLA_MARKETS' AND m.column_name = 'SHAPE' 
+  AND c.name = 'cola_a';
+
+SELECT NAME, SDO_GEOM.SDO_AREA(shape,0.005)FROM COLA_MARKETS c
+where c.name='cola_a';
+
+5.Return the distance between two geometries.
+
+SDO_GEOM.SDO_DISTANCE :
+Computes the minimum distance between two geometry objects, which is the distance between the closest pair of points or segments of the two objects.
+syntax :
+
+SDO_GEOM.SDO_DISTANCE(     
+  geom1 IN SDO_GEOMETRY,      
+  dim1  IN SDO_DIM_ARRAY,      
+  geom2 IN SDO_GEOMETRY,      
+  dim2  IN SDO_DIM_ARRAY
+  [, unit  IN VARCHAR2]      
+       
+)
+
+OR
+SDO_GEOM.SDO_DISTANCE(     
+  geom1 IN SDO_GEOMETRY,      
+  geom2 IN SDO_GEOMETRY,      
+  tol   IN NUMBER       
+  [, unit  IN VARCHAR2]      
+)
+
+Query :
+
+SELECT SDO_GEOM.SDO_DISTANCE(c_b.shape, m.diminfo, c_d.shape, m.diminfo) 
+  FROM cola_markets c_b, cola_markets c_d, user_sdo_geom_metadata m 
+  WHERE m.table_name = 'COLA_MARKETS' AND m.column_name = 'SHAPE' 
+  AND c_b.name = 'cola_b' AND c_d.name = 'cola_d';
+
+SELECT SDO_GEOM.SDO_DISTANCE(C_B.SHAPE,C_D.SHAPE,0.0005)
+FROM COLA_MARKETS C_B, COLA_MARKETS C_D
+WHERE C_B.NAME='cola_b' AND C_D.NAME='cola_d';
+
+6.Is a geometry valid?
+SDO_GEOM.SDO_VALIDATE_GEOMETRY :
+Syntax :
+
+SELECT c.name, SDO_GEOM.VALIDATE_GEOMETRY(c.shape, m.diminfo) 
+  FROM cola_markets c, user_sdo_geom_metadata m 
+  WHERE m.table_name = 'COLA_MARKETS' AND m.column_name = 'SHAPE' 
+  AND c.name = 'cola_c';
+
+7.Is a layer valid? (First, create the results table.)
+
+CREATE TABLE validation_results (mkt_id number, result varchar2(10));
+
+EXECUTE SDO_GEOM.VALIDATE_LAYER('COLA_MARKETS', 'SHAPE', 'MKT_ID', 'VALIDATION_RESULTS');
+SELECT * from validation_results;
