@@ -1,0 +1,195 @@
+ Create a spatial database based on the following information
+Create three relations
+State(region, name)
+City(center,region,name)
+Rivers(name, route)
+Note:- Scale 1Unit=100km
+Given: -
+1.	State ‘st1’ which extends from (10,10),(60,60) ,(50,10) ,(10,40)   -Polygon
+2.	State ‘st2’ which has two opposite corners situated at (100,50) & (150,20) (Rectangle)
+3.	City ‘C1’ with center at (15,35) region is circular with largest road of 10 -
+4.	City ‘C2’ with center at (22,35) region is circular with the largest road of 4. -circle
+5.	City ‘C3’ with center as (55,40) region is point
+6.	City ‘C4’ with center (48,33) which is rectangular with corner situated at (40,30) & (55,15)
+7.	City ‘C5’ extending from (120,40) to (130,30)  (Rectangle)
+8.	River ‘r1’  with route extending from (15,25) to (52,58) -( line)
+9.	River ‘r2’  with route extending from (10,30) to (60,45) (Line)
+10.	River ‘r3’  with route extending from (55,30) to (110,30) - Line
+Queries
+1.	Locate all cities in state ‘st1’ 
+2.	 Locate all cities in state ‘st2’
+3.	 Locate all cities not more than 10km from ‘c3’
+4.	 Locate the cities touching city ‘c2’
+5.	 Locate city within 5km from ‘r2’
+6.	 Locate cities intersected by river ‘r2’
+7.	 Find cities intersected by ‘r3’
+8.	Find the population in every city of state ‘st1’ if the population per sq. km. is 6.
+9.	Find distance between two states.
+
+CREATE TABLE REGION (
+    RG_ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(32),
+    SHAPE MDSYS.SDO_GEOMETRY
+);
+
+INSERT INTO REGION VALUES(
+    1,
+    'STATE_1',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(10,10 , 50,10 , 60,60 ,10,40 ,10,10)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    2,
+    'STATE_2',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(100,20 , 15,50)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    3,
+    'CITY_1',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2003,4),
+        MDSYS.SDO_ORDINATE_ARRAY(15,30 , 10,35 , 15,40)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    4,
+    'CITY_2',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2003,4),
+        MDSYS.SDO_ORDINATE_ARRAY(22,33 , 20,35 , 22,37)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    5,
+    'CITY_3',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(55,40)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    6,
+    'CITY_4',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(40,15 , 55,30)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    7,
+    'CITY_4',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(120,30 , 130,40)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    8,
+    'RIVER_1',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(15,25 , 52,58)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    9,
+    'RIVER_2',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(10,30 , 60,45)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    10,
+    'RIVER_3',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(55,30 , 110,30)
+    )
+);
+
+updating meta deta :
+INSERT INTO USER_SDO_GEOM_METADATA VALUES (
+  'REGION',
+  'SHAPE',
+  MDSYS.SDO_DIM_ARRAY(   
+    MDSYS.SDO_DIM_ELEMENT('X', 0, 180, 0.005),
+    MDSYS.SDO_DIM_ELEMENT('Y', 0, 180, 0.005)
+     ),
+  NULL
+);
+createing index :
+CREATE INDEX REGION_IDX
+ON REGION(SHAPE)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+
+QUERIES >
+Locate all cities in state ‘st1’ 
+
+SELECT S.NAME FROM REGION S, REGION C
+WHERE S.NAME='STATE_1' AND
+SDO_GEOM.RELATE(
+    S.NAME,
+    'COVERS',
+    C.SHAPE
+)='TRUE';
+
+SELECT SDO_GEOM.RELATE(c_b.shape, 'DETERMINE', c_c.shape) 
+  FROM cola_markets c_b, cola_markets c_c
+  WHERE c_b.name = 'cola_b' AND c_c.name = 'cola_c';
+
+TRY CHECKING This
+https://download.oracle.com/otndocs/products/spatial/pdf/au_melbourne06_start.pdf
+
+Locate all cities in state ‘st2’
+Locate all cities not more than 10km from ‘c3’
+Locate the cities touching city ‘c2’
+Locate city within 5km from ‘r2’
+Locate cities intersected by river ‘r2’
+Find cities intersected by ‘r3’
+Find the population in every city of state ‘st1’ if the population per sq. km. is 6.
+Find distance between two states.

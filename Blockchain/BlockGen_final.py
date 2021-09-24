@@ -1,6 +1,5 @@
 from hashlib import sha256
 from datetime import datetime
-from random import randint
 
 
 class Block:

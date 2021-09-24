@@ -72,13 +72,15 @@ def print_blockchain():
 
 flag = True
 while flag:
-    ch=int(input("1. View Blockchain 2. Add block 3. Blockchain Lenght 4. Exit \t"))
+    ch=int(input("1. View Blockchain 2. Add block 3. Blockchain Length 4. Exit \t"))
     if ch==1:
         print_blockchain()
     if ch==2:
         data=input("Enter data to be inserted in block \t")
         blockchain.add_block(data)
     if ch==3:
-        print("Blockchain lenght : ",len(blockchain.chain))
+        print("Blockchain length : ",len(blockchain.chain))
     if ch==4:
         flag = False
+
+# rasikamundhe@ruiacollege.edu
