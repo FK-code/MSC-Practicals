@@ -186,6 +186,16 @@ TRY CHECKING This
 https://download.oracle.com/otndocs/products/spatial/pdf/au_melbourne06_start.pdf
 
 Locate all cities in state ‘st2’
+
+if city state river has different tables
+
+SELECT C.NAME FROM CITY C, STATES S
+WHERE S.STATE ='STATE_1' AND SDO_GEOM.RELATE(
+    S.STATE,
+    'COVERS',
+    C.CITY
+)='TRUE';
+
 Locate all cities not more than 10km from ‘c3’
 Locate the cities touching city ‘c2’
 Locate city within 5km from ‘r2’
@@ -193,3 +203,280 @@ Locate cities intersected by river ‘r2’
 Find cities intersected by ‘r3’
 Find the population in every city of state ‘st1’ if the population per sq. km. is 6.
 Find distance between two states.
+
+
+---------------------------------------------------------------------------
+try 2
+
+CREATE TABLE REGION (
+    RG_ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(32),
+    SHAPE MDSYS.SDO_GEOMETRY
+);
+
+INSERT INTO REGION VALUES(
+    1,
+    'STATE_1',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(10,10 , 50,10 , 60,60 ,10,40 ,10,10)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    2,
+    'STATE_2',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(100,20 , 150,50)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    3,
+    'CITY_1',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,4),
+        MDSYS.SDO_ORDINATE_ARRAY(15,30 , 20,35 , 15,40)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    4,
+    'CITY_2',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,4),
+        MDSYS.SDO_ORDINATE_ARRAY(22,33 , 24,35 , 22,37)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    5,
+    'CITY_3',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(55,40)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    6,
+    'CITY_4',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(40,15 , 55,30)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    7,
+    'CITY_5',
+    MDSYS.SDO_GEOMETRY(
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),
+        MDSYS.SDO_ORDINATE_ARRAY(120,30 , 130,40)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    8,
+    'RIVER_1',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(15,25 , 52,58)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    9,
+    'RIVER_2',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(10,30 , 60,45)
+    )
+);
+
+INSERT INTO REGION VALUES(
+    10,
+    'RIVER_3',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(55,30 , 110,30)
+    )
+);
+
+CREATE INDEX
+REGION_IDX
+ON REGION(SHAPE)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+
+1. Locate ALL CITYS IN STATE_1
+
+SELECT 
+R.NAME
+FROM REGION S, REGION R
+WHERE
+S.NAME='STATE_1'
+AND
+SDO_GEOM.RELATE
+(S.SHAPE,'CONTAINS+COVERS',R.SHAPE)='TRUE'; 
+-- DOES NOT RETURN ANY ROWS
+
+THIS RETURNS TABLE WHERE CITY IS CONTAINS OR COVERS
+
+SELECT 
+R.NAME,SDO_GEOM.RELATE
+(S.SHAPE,'CONTAINS OR COVERS',R.SHAPE)
+FROM REGION S, REGION R
+WHERE
+S.NAME='STATE_1';
+
+----- THIS CODE WORKS ----
+
+SELECT 
+R.NAME
+FROM REGION S, REGION R
+WHERE
+S.NAME='STATE_1'
+AND
+SDO_GEOM.RELATE
+(S.SHAPE,'CONTAINS OR COVERS',R.SHAPE)='CONTAINS OR COVERS';
+
+2. LOCATE ALL CITYS IN STATE 2
+
+SELECT 
+R.NAME, SDO_GEOM.RELATE(S.SHAPE,'DETERMINE',R.SHAPE)
+FROM REGION R, REGION S
+WHERE
+S.NAME='STATE_2'
+AND
+SDO_GEOM.RELATE
+(S.SHAPE,'CONTAINS OR COVERS', R.SHAPE)='CONTAINS OR COVERS';
+
+
+3. Locate all cities not more than 10km from ‘c3’
+SELECT
+R.NAME,
+SDO_GEOM.WITHIN_DISTANCE(C.SHAPE,10,R.SHAPE)
+FROM REGION R, REGION C
+WHERE C.NAME='CITY_3'
+AND
+SDO_GEOM.WITHIN_DISTANCE(C.SHAPE,10,R.SHAPE)='TRUE';
+
+--- this returns all the regions inside or on 10km boundary of c3
+--- includes state_1, city_3, city_4, RIVER_2, RIVER_3
+
+4. Locate the cities touching city ‘c2’
+
+SELECT R.NAME, SDO_GEOM.RELATE(C.SHAPE,'DETERMINE',R.SHAPE)
+FROM REGION R, REGION C
+WHERE
+C.NAME='CITY_2'
+AND
+SDO_GEOM.RELATE(C.SHAPE,'TOUCH',R.SHAPE)='TOUCH';
+
+5.	 Locate city within 5km from ‘r2’
+
+SELECT 
+R.NAME,
+SDO_GEOM.WITHIN_DISTANCE(C.SHAPE,5,R.SHAPE)
+FROM REGION R, REGION C
+WHERE 
+C.NAME='RIVER_2'
+AND
+SDO_GEOM.WITHIN_DISTANCE(C.SHAPE,5,R.SHAPE)='TRUE';
+
+6. Locate cities intersected by river ‘r2’
+
+SELECT
+R.NAME,
+SDO_GEOM.RELATE(R.SHAPE,'OVERLAPBDYINTERSECT',C.SHAPE)
+FROM REGION R, REGION C
+WHERE
+C.NAME='RIVER_2'
+AND
+SDO_GEOM.RELATE(C.SHAPE,'OVERLAPBDYINTERSECT',R.SHAPE)='OVERLAPBDYINTERSECT';
+
+-- gives only state, maybe problem in city coordinates or different relate mask
+
+
+SELECT
+R.NAME,
+SDO_GEOM.RELATE(R.SHAPE,'DETERMINE',C.SHAPE)
+FROM REGION R, REGION C
+WHERE
+C.NAME='RIVER_2'
+AND
+SDO_GEOM.RELATE(C.SHAPE,'ANYINTERACT',R.SHAPE)='TRUE';
+
+--THIS GIVES ALL THE RELATE BETWEEN R2 AND OTHER regions
+
+7.	 Find cities intersected by ‘r3’
+
+SELECT
+R.NAME,
+SDO_GEOM.RELATE(R.SHAPE,'DETERMINE',C.SHAPE)
+FROM REGION R, REGION C
+WHERE
+C.NAME='RIVER_3'
+AND
+SDO_GEOM.RELATE(C.SHAPE,'ANYINTERACT',R.SHAPE)='TRUE';
+
+--none..just intersects state_2, relate given by OVERLAPBDYDISJOINT
+--maybe problem with interior or exterior, coordinates, 
+
+8.	Find the population in every city of state ‘st1’ if the population per sq. km. is 6.
+
+SELECT 
+R.NAME,
+SDO_GEOM.SDO_AREA(R.SHAPE, 0.005)
+FROM REGION S, REGION R
+WHERE
+S.NAME='STATE_1'
+AND
+SDO_GEOM.RELATE
+(S.SHAPE,'CONTAINS OR COVERS',R.SHAPE)='CONTAINS OR COVERS';
+
+-- look into begin if else end struture of queries for direct ans
+
+9.	Find distance between two states.
+
+SELECT 
+SDO_GEOM.SDO_DISTANCE(S1.SHAPE,S2.SHAPE) "DISTANCE BETWEEN STATE_1 AND STATE_2"
+FROM REGION S1, REGION S2
+WHERE
+S1.NAME='STATE_1'
+AND
+S2.NAME='STATE_2';
+
+---------------------------------------
+on TRY 3 > separate tables for states cities and rivers
