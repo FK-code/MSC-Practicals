@@ -1,0 +1,26 @@
+[
+    {
+        "rollno":1001,
+        "marks":80
+    },
+    {
+        "rollno":1002,
+        "marks":85
+    },
+    {
+        "rollno":1003,
+        "marks":90
+    },
+    {
+        "rollno":1004,
+        "marks":70
+    },
+    {
+        "rollno":1005,
+        "marks":40
+    },
+    {
+        "rollno":1006,
+        "marks":30
+    }
+]

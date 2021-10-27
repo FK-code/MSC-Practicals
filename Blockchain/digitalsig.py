@@ -42,12 +42,12 @@ def sign_data(message,private_key_n,private_key_d):
     return hashed_msg, signature
 
 def verify_data(public_key_n,public_key_e,hashed_msg,signature):
-    try:
+    # try:
         hash=int.from_bytes(hashed_msg,byteorder='big')
         hashfromsignature=pow(signature,public_key_e,public_key_n)    
         print("The signature is valid :", hash==hashfromsignature)
-    except:
-        print("signature is not valid")
+    # except:
+    #     print("signature is not valid")
 
 #generating private and public keys
 key=RSA.generate(1024)

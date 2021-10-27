@@ -1,0 +1,1007 @@
+tripura
+
+area 10,491.69 km2
+
+south tripura district
+Total geographical area of the District is 1514.322 Square Kilometers.  > 1590
+As per Data of Census 2011, total population of the District is 4,30,499. 
+
+gomati district
+Area: 1522.8 sq. km >
+Population: 441538
+
+5 % OF 2.5335e15 == 1.26675e14
+
+2,533,500,000,000,000
+       5.53564404e10  ==45,767
+        5.8076135e10  ==43,623
+
+
+55,000,000,000 = 5.5e10
+wyoming 
+area 253,335 sqkm  45758.8 sqcm
+2.5335e15 / 45758 = 5.53564404e10 == 55,356,440,400
+
+colorado
+area 269,601sqkm  48309 sqcm
+2.69601e15 / 48309 = 5.8076135e10
+
+1 unit = sqkm
+45758.8 unit = 253,335 sqkm
+253,335 / 45,758.8 = 5.53631214
+
+
+final scale 1:5.5e10
+map is about 2 usa timezones, pacific time PST and mountain time MST 
+and its included states 
+
+
+CREATE TABLE ZONE
+(
+    Z_ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(32),
+    TYPE VARCHAR2(32),
+    SHAPE MDSYS.SDO_GEOMETRY
+);
+
+--NewMexico=Polygon(P,Q,R,S,T,K)
+INSERT INTO ZONE VALUES
+(
+    1,
+    'NEW MEXICO',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            494, 718,
+            527, 712,
+            533, 735,
+            736, 723,
+            758, 964,
+            532, 985,
+            494, 718
+        )
+    )
+);
+--Colorado=Polygon(K,I,J,I,E,L)
+INSERT INTO ZONE VALUES
+(
+    2,
+    'COLORADO',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            532, 985,
+            793, 960,
+            802, 1148,
+            735, 1155,
+            557, 1176,
+            532, 985
+        )
+    )
+);
+
+--Wyoming=Polygon(F,L,E,H,G)
+INSERT INTO ZONE VALUES
+(
+    3,
+    'WYOMING',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+           487, 1184,
+           557, 1176,
+           735, 1155,
+           751, 1343,
+           518, 1372,
+           487, 1184
+        )
+    )
+);
+
+--Montana=Polygon(H,J_{2},C_{2},D_{2},E_{2},F_{2},G_{2},H_{2},I_{2},G)
+INSERT INTO ZONE VALUES
+(
+    4,
+    'MONTANA',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            751,1343,
+            766,1532,
+            390,1587,
+            382,1543,
+            418,1467,
+            406,1422,
+            427,1422,
+            449,1357,
+            515,1355,
+            518,1372,
+            751,1343
+        )
+    )
+);
+
+--Idaho=Polygon(B_{2},C_{2},D_{2},E_{2},F_{2},G_{2},H_{2},I_{2},O,N,S_{1},R_{1},Q_{1},P_{1},O_{1})
+--chng ordinate order**
+INSERT INTO ZONE VALUES
+(
+    5,
+    'IDAHO',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            357,1594,
+            390,1587,
+            382,1543,
+            418,1467,
+            406,1422,
+            427,1422,
+            449,1357,
+            515,1355,
+            495.3,1231.3,
+            390,1248,
+            289.4,1270.8,
+            311,1372,
+            306,1383,
+            343,1440,
+            332,1454,
+            357,1594
+        )
+    )
+);
+
+--UTAH=Polygon(K, M, N, O, F, L)
+INSERT INTO ZONE VALUES
+(
+    6,
+    'UTAH',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            532,985,
+            557, 1176,
+            487,1184,
+            495.3,1231.3,
+            390,1248,
+            345,1013,
+            532,985
+        )
+    )
+);
+
+--Arizona=Polygon(P,K,M,V,U)
+INSERT INTO ZONE VALUES
+(
+    7,
+    'ARIZONA',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            494,718,
+            532,985,
+            345,1013,
+            313.3,914.9,
+            279,809,
+            404,731,
+            494,718
+        )
+    )
+);
+
+--Calfornia=Polygon(V,A_{1},Z,W,B_{1},C_{1},D_{1},E_{1},F_{1},G_{1})
+INSERT INTO ZONE VALUES
+(
+    8,
+    'CALIFORNIA',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            279,809,
+            313.3,914.9,
+            150,1160,
+            186,1293,
+            43,1336,
+            21,1254,
+            40,1131,
+            78,956,
+            149,901,
+            184,832,
+            279,809
+        )
+    )
+);
+
+--Nevada=Polygon(N,W,Z,A_{1},M)
+
+INSERT INTO ZONE VALUES
+(
+    9,
+    'NEVADA',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            390,1248,
+            186,1293,
+            150,1160,
+            313.3,914.9,
+            345,1013,
+            390,1248
+        )
+    )
+);
+
+--Oregon=Polygon(B_{1},H_{1},I_{1},J_{1},K_{1},L_{1},M_{1},N_{1},O_{1},P_{1},Q_{1},R_{1},S_{1},W)
+INSERT INTO ZONE VALUES
+(
+    10,
+    'OREGON',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            186,1293,
+            289.4,1270.8,
+            311,1372,
+            306,1383,
+            343,1440,
+            332,1454,
+            269,1471,
+            162,1478,
+            141,1489,
+            141,1510,
+            112,1523,
+            72,1415,
+            44,1378,
+            43,1336,
+            186,1293
+        )
+    )
+);
+
+--Washington=Polygon(J_{1},T_{1},U_{1},V_{1},W_{1},Z_{1},A_{2},B_{2},O_{1},N_{1},M_{1},L_{1},K_{1})(J_1,K_1,L_1,M_1,N_1,O_1)
+INSERT INTO ZONE VALUES
+(
+    11,
+    'WASHINGTON',
+    'STATE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            112,1523,
+            141,1510,
+            141,1489,
+            162,1478,
+            269,1471,
+            332,1454,
+            357,1594,
+            184,1640,
+            189,1589,
+            150,1550,
+            171,1595,
+            115,1632,
+            118,1560,
+            112,1523
+        )
+    )
+);
+
+--pacificTimeZone=Polygon(K_{2},L_{2},M_{2},N_{2},O_{2},P_{2},Q_{2},R_{2},S_{2},T_{2},U_{2},V_{2},W_{2},Z_{2},A_{3},B_{3},C_{3},D_{3},E_{3},F_{3},G_{3},H_{3},I_{3},J_{3},K_{3},L_{3},M_{3})
+--STARTING FROM CAL-NEV-OR-WASH-OR-CAL
+INSERT INTO ZONE VALUES
+(
+    12,
+    'PACIFIC STANDARD TIME',
+    'TIME ZONE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            279,809,
+            313.3,914.9,
+            345,1013,
+            390,1248,
+            289.4,1270.8,
+            311,1372,
+            306,1383,
+            343,1440,
+            406,1422,
+            418,1467,
+            382,1543,
+            390,1587,
+            357,1594,
+            184,1640,
+            189,1589,
+            150,1550,
+            171,1595,
+            115,1632,
+            118,1560,
+            112,1523,
+            72,1415,
+            44,1378,
+            43,1336,
+            21,1254,
+            40,1131,
+            78,956,
+            149,901,
+            184,832,
+            279,809
+        )
+    )
+);
+
+--mountainTimeZone=Polygon(W_{2},N_{3},O_{3},P_{3},Q_{3},R_{3},S_{3},T_{3},U_{3},V_{3},W_{3},L_{2},M_{2},N_{2},O_{2},P_{2},Q_{2},R_{2},S_{2},T_{2},U_{2},V_{2})
+--NEWMX-COL-WY-MON-ID-UTH-ARZ-NEWMX
+INSERT INTO ZONE VALUES
+(
+    13,
+    'MOUNTAIN STANDARD TIME',
+    'TIME ZONE',
+    MDSYS.SDO_GEOMETRY
+    (
+        2003,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            390,1587,
+            382,1543,
+            418,1467,
+            406,1422,
+            343,1440,
+            306,1383,
+            311,1372,
+            289.4,1270.8,
+            390,1248,
+            345,1013,
+            313.3,914.9,
+            279,809,
+            279,600,
+            850,600,
+            850,1587,
+            390,1587
+        )
+    )
+);
+
+--seattle > portland > scaramento > LA > san diego
+INSERT INTO ZONE VALUES(
+    14,
+    'ROUTE_5',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,4,4 , 1,2,1 , 3,2,1 , 5,2,1 , 7,2,1 ),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            173,1559,
+            135,1470,
+            85,1138,
+            165,912,
+            184,832
+        )
+    )
+);
+
+
+INSERT INTO ZONE VALUES(
+    15,
+    'ROUTE_84',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,4,2 , 1,2,1 , 3,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            135,1470,
+            320,1321,
+            452,1161
+        )
+    )
+);
+
+
+INSERT INTO ZONE VALUES(
+    16,
+    'ROUTE_80',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,4,2 , 1,2,1 , 3,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            85,1138,
+            452,1161,
+            702,1167
+        )
+    )
+);
+
+
+
+INSERT INTO ZONE VALUES(
+    17,
+    'ROUTE_90',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            173,1559,
+            465,1432
+        )
+    )
+);
+
+
+
+INSERT INTO ZONE VALUES(
+    18,
+    'ROUTE_25',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,4,3 , 1,2,1 , 3,2,1 , 5,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            614,871,
+            696,1088,
+            702,1167,
+            465,1432
+        )
+    )
+);
+
+
+
+INSERT INTO ZONE VALUES(
+    19,
+    'ROUTE_15',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,4,2 , 1,2,1 , 3,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            165,912,
+            296,967,
+            452,1161
+        )
+    )
+);
+
+
+
+INSERT INTO ZONE VALUES(
+    20,
+    'ROUTE_40',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            165,912,
+            614,871
+        )
+    )
+);
+
+
+INSERT INTO ZONE VALUES(
+    21,
+    'ROUTE_10',
+    'HIGHWAY',
+    MDSYS.SDO_GEOMETRY(
+        2002,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            165,912,
+            376,807
+        )
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    22,
+    'SEATTLE',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            173,1559
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    23,
+    'PORTLAND',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            135,1470
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    24,
+    'SACRAMENTO',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            85,1138
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    25,
+    'LOS ANGELES',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            165,912
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    26,
+    'SAN DIEGO',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+             184,832
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    27,
+    'PHEONIX',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            376,807
+        )
+
+    )
+);
+
+
+INSERT INTO ZONE VALUES(
+    28,
+    'LAS VEGAS',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            296,967
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    29,
+    'ALBUQUERQUE',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            614,871
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    30,
+    'DENVER',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            696,1088
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    31,
+    'SALT LAKE CITY',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            452,1161
+        )
+
+    )
+);
+
+
+INSERT INTO ZONE VALUES(
+    32,
+    'CHEYENNE',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            702,1167
+        )
+
+    )
+);
+
+INSERT INTO ZONE VALUES(
+    33,
+    'BOISE',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            320,1321
+        )
+
+    )
+);
+
+
+INSERT INTO ZONE VALUES(
+    34,
+    'BOZEMAN',
+    'CITY',
+    MDSYS.SDO_GEOMETRY(
+        2001,
+        NULL,
+        NULL,
+        MDSYS.SDO_ELEM_INFO_ARRAY(1,1,1),
+        MDSYS.SDO_ORDINATE_ARRAY(
+            465,1432
+        )
+
+    )
+);
+
+SELECT * FROM ZONE S
+WHERE S.TYPE='STATE';
+
+INSERT INTO USER_SDO_GEOM_METADATA VALUES (
+  'ZONE',
+  'SHAPE',
+  MDSYS.SDO_DIM_ARRAY(   
+    MDSYS.SDO_DIM_ELEMENT('X', 0, 1000, 0.5),
+    MDSYS.SDO_DIM_ELEMENT('Y', 0, 2000, 0.5)
+     ),
+  NULL
+);
+
+CREATE INDEX ZONE_IDX
+ON ZONE(SHAPE)
+INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+
+
+
+
+QUERIES 
+
+1. Select states in timezone MST 
+2. Select states in timezone PST
+3. Select states that share boundaries with Nevada
+4. Select cities on route 5
+5. Select all interstates passing through salt lake city
+6. Select all cities in CALIFORNIA state
+
+1. Select states in timezone MST 
+--STARTING
+
+SELECT S.NAME "STATES IN ZONE MST"
+FROM ZONE S ,ZONE R
+WHERE
+S.TYPE='STATE'
+AND
+R.NAME='MOUNTAIN STANDARD TIME'
+AND
+SDO_GEOM.RELATE(R.SHAPE,'CONTAINS OR COVERS',S.SHAPE)='CONTAINS OR COVERS';
+
+
+--WORKS
+--end
+2. Select states in timezone PST
+--STARTING
+
+SELECT S.NAME "STATES IN ZONE PST"
+FROM ZONE S ,ZONE R
+WHERE
+S.TYPE='STATE'
+AND
+R.NAME='PACIFIC STANDARD TIME'
+AND
+SDO_GEOM.RELATE(R.SHAPE,'CONTAINS OR COVERS',S.SHAPE)='CONTAINS OR COVERS';
+
+---WORKS
+--end
+
+NOTE : FOR IDAHO ADD OVERLAPBDYINTERSECTION mask
+
+3. Select states that share boundaries with Nevada
+--STARTING
+
+SELECT S.NAME "NEIGHBOURS OF NEVADA"
+FROM ZONE S,ZONE R
+WHERE 
+S.TYPE='STATE'
+AND
+R.NAME='NEVADA'
+AND
+SDO_GEOM.RELATE(R.SHAPE,'TOUCH',S.SHAPE)='TOUCH';
+
+-- WORKS ADDED 1 MORE POINT TO INCLUDE ARIZONA
+--end
+
+4. Select cities on route 5
+--STARTING
+
+SELECT S.NAME "CITIES ON ROUTE 5",
+SDO_GEOM.RELATE(R.SHAPE,'DETERMINE',S.SHAPE)
+FROM ZONE S,ZONE R
+WHERE
+S.TYPE='CITY'
+AND
+R.NAME='ROUTE_5';
+
+-----CHECING FOR RELATIONS
+
+SELECT S.NAME "CITIES ON ROUTE 5",
+SDO_GEOM.RELATE(R.SHAPE,'DETERMINE',S.SHAPE)
+FROM ZONE S,ZONE R
+WHERE
+S.TYPE='CITY'
+AND
+R.NAME='ROUTE_5'
+AND 
+SDO_GEOM.RELATE(R.SHAPE,'CONTAINS OR TOUCH',S.SHAPE)='CONTAINS OR TOUCH';
+
+--BY INTERSECTION
+
+SELECT S.NAME "CITY"
+FROM ZONE S,ZONE R
+WHERE
+S.TYPE='CITY'
+AND
+R.NAME='ROUTE_5'
+AND
+SDO_GEOM.SDO_INTERSECTION(R.SHAPE,S.SHAPE)IS NOT NULL;
+
+
+--end
+
+5. Select all interstates passing through salt lake city
+--STARTING
+
+SELECT S.NAME "ROUTE", 
+SDO_GEOM.RELATE(R.SHAPE,'DETERMINE',S.SHAPE) "RELATION"
+FROM ZONE S,ZONE R
+WHERE
+S.TYPE='HIGHWAY'
+AND
+R.NAME='SALT LAKE CITY';
+
+-----CHECING FOR RELATIONS
+
+SELECT S.NAME "ROUTE"
+FROM ZONE S,ZONE R
+WHERE
+S.TYPE='HIGHWAY'
+AND
+R.NAME='SALT LAKE CITY'
+AND
+SDO_GEOM.SDO_INTERSECTION(R.SHAPE,S.SHAPE)IS NOT NULL;
+
+--THIS GIVES THE ANS 
+
+--end
+6. Select all cities in CALIFORNIA state
+--STARTING
+
+SELECT S.NAME "CITIES IN CALIFORNIA"
+FROM ZONE S, ZONE R
+WHERE
+S.TYPE='CITY'
+AND
+R.NAME='CALIFORNIA'
+AND
+SDO_GEOM.RELATE(R.SHAPE,'CONTAINS OR COVERS',S.SHAPE)='CONTAINS OR COVERS';
+
+--TO INCLUDE SAN DIEGO ADD mask TOUCH, SINCE THE CITY IS DEFINED AS A POINT ON THE BOUNDARY
+--OF THE STATE
+
+--WORKS
+--end
+
+
+CHANGES
+1. ADDED POINT TO DEFINE ARIZONA
+2. CHANGING GTYPE OF HIGHWAY FROM 2002 TO 2006 --- THIS IS NOT REQ
+    (PROB WAS IN STARTING OFFSET INDEX)
+3. changed MST ordinate array > followed left, right boxed
+MST ordinates (OLD)
+            494, 718,
+            527, 712,
+            533, 735,
+            736, 723,
+            758, 964,
+            793, 960,
+            802, 1148,
+            735, 1155,
+            751, 1343,
+            766,1532,
+            390,1587,
+            382,1543,
+            418,1467,
+            406,1422,
+            343,1440,
+            306,1383,
+            311,1372,
+            289.4,1270.8,
+            390,1248,
+            390,1248,
+            345,1013,
+            345,1013,
+            279,809,
+            404,731,
+            494,718 
+
+-- select forest in idaho
+SELECT S.name
+FROM MAP S, MAP R
+WHERE 
+S.type='Forest'
+AND
+R.name='Idaho'
+AND
+SDO_GEOM.RELATE(R.shape,'CONTAINS',S.shape,0.5)='CONTAINS';
+
+-- this WORKS
+
+
+SELECT S.name,
+SDO_GEOM.RELATE(R.shape,'DETERMINE',S.shape,0.5) "RELATION"
+FROM 
+map S, map R
+WHERE
+R.name='Idaho';
+
+--end
+
+--select roads in Idaho
+SELECT S.name
+FROM MAP s, MAP r
+WHERE
+s.type='Road'
+AND
+r.name='Idaho'
+AND
+SDO_GEOM.RELATE(r.shape,'CONTAINS',s.shape,0.5)='CONTAINS';
+
+SELECT S.name,
+SDO_GEOM.RELATE(S.shape,'DETERMINE',R.shape,0.5) "RELATION"
+FROM 
+map S, map R
+WHERE
+R.name='Salt City';

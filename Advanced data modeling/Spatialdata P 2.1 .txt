@@ -106,7 +106,7 @@ SDO_ETYPE //, SDO_INTERPRETATION //> Used for
 DL03,1 > polygon with straight lines (enter cyclic points)
 DL03,2 > polygon with circular arcs (enter cyclic points)
 DL03,3 > rectangle (two points = lower left and upper right)
-DL04,4 > circle (3 points)
+DL03,4 > circle (3 points)
 4,n > n is number of subelements in compound string
 DL05,n > n is number of subelements in compound polygon
 DL06,n > n is number of polygons that makeup the surface

@@ -1,0 +1,168 @@
+Problem statement:
+Perform the following on some document database
+1. create at least two collections
+2. insert five records in each
+3. Querying-filtering,join at least six queries
+4. UPdating a record
+5. deleting a record
+6. dropping collection and databases
+Include dbref,composite objects,updatemany,lt,gt queries,aggregate join,mongodb compass
+
+1. Display databases
+show dbs;
+2. Create a database
+use DATABASE_NAME;
+use Students;
+
+
+Inserting document into collection
+db.collection.insertOne()	
+Inserts a single document into a collection.
+
+db.Student_details.insertOne(
+    {
+        "name": "Adam",
+        "class": 10,
+        "rollno": 1001,
+        "address": {
+            "location": "A_place",
+            "zipcode": 1800
+        }
+    }
+);
+
+
+db.collection.insertMany() 
+inserts multiple documents into a collection.
+Pass an array of documents to the method.
+
+db.Student_details.insertMany([
+        {
+        "name": "Bob",
+        "class": 10,
+        "rollno": 1002,
+        "address": {
+            "location": "A_place",
+            "zipcode": 1800
+        }
+    },
+    {
+        "name": "Candice",
+        "class": 10,
+        "rollno": 1003,
+        "address": {
+            "location": "B_place",
+            "zipcode": 1801
+        }
+    }
+]);
+
+
+db.collection.insert() 
+inserts a single document or multiple documents into a collection.
+
+db.Student_details.insert(
+    {
+        "name": "Danny",
+        "class": 10,
+        "rollno": 1004,
+        "address": {
+            "location": "B_place",
+            "zipcode": 1801
+        }
+    }
+);
+
+db.Student_details.insert([
+    {
+        "name": "Emily",
+        "class": 10,
+        "rollno": 1005,
+        "address": {
+            "location": "C_place",
+            "zipcode": 1802
+        }
+    },
+    {
+        "name": "Frank",
+        "class": 10,
+        "rollno": 1006,
+        "address": {
+            "location": "C_place",
+            "zipcode": 1802
+        }
+    }
+]);
+
+creating new collection Student marks
+
+db.Student_marks.insert([
+    {
+        "rollno":1001,
+        "marks":80
+    },
+    {
+        "rollno":1002,
+        "marks":85
+    },
+    {
+        "rollno":1003,
+        "marks":90
+    },
+    {
+        "rollno":1004,
+        "marks":70
+    },
+    {
+        "rollno":1005,
+        "marks":40
+    },
+    {
+        "rollno":1006,
+        "marks":30
+    }
+]);
+
+
+joining two documents
+using aggregate join in aggregate pipline stage
+Using $lookup stage
+//add syntax here
+
+db.Student_details.aggregate([
+    {/**
+     * from: The target collection.
+     * localField: The local join field.
+     * foreignField: The target join field.
+     * as: The name for the results.
+     * pipeline: The pipeline to run on the joined collection.
+     * let: Optional variables to use in the pipeline field stages.
+     */
+    $lookup: {
+      from: 'Student_marks',
+      localField: 'rollno',
+      foreignField: 'rollno',
+      as: 'results'
+    }}
+]);
+
+//trail
+db.Student_details.aggregate([
+    {$lookup: {
+      from: 'Student_marks',
+      localField: 'rollno',
+      foreignField: 'rollno',
+      as: 'results'
+    }},
+    {$filter: {
+      {"results.marks":{$gt:40}}
+    }}
+]);
+
+//does not work
+
+Querying documents
+
+db.collection.find();
+
+db.

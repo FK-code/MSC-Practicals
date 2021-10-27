@@ -1,0 +1,55 @@
+[{
+        "name": "Adam",
+        "class": 10,
+        "rollno": 1001,
+        "address": {
+            "location": "A_place",
+            "zipcode": 1800
+        }
+    },
+    {
+        "name": "Bob",
+        "class": 10,
+        "rollno": 1002,
+        "address": {
+            "location": "A_place",
+            "zipcode": 1800
+        }
+    },
+    {
+        "name": "Candice",
+        "class": 10,
+        "rollno": 1003,
+        "address": {
+            "location": "B_place",
+            "zipcode": 1801
+        }
+    },
+    {
+        "name": "Danny",
+        "class": 10,
+        "rollno": 1004,
+        "address": {
+            "location": "B_place",
+            "zipcode": 1801
+        }
+    },
+    {
+        "name": "Emily",
+        "class": 10,
+        "rollno": 1005,
+        "address": {
+            "location": "C_place",
+            "zipcode": 1802
+        }
+    },
+    {
+        "name": "Frank",
+        "class": 10,
+        "rollno": 1006,
+        "address": {
+            "location": "C_place",
+            "zipcode": 1802
+        }
+    }
+]

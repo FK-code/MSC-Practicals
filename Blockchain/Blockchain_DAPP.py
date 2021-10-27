@@ -95,9 +95,13 @@ class Blockchain:
 
 # if both nodes add a node with diff transaction at same index or block no. then
 # then both nodes have diff chains
-# >> sol.. mybe implemnet queuing system to queue mine block 
+# >> sol.. mybe implement queuing system to queue mine block 
 # add transaction till block limit > wait for turn in queue 
 # > replace chain > mine block > Block added to Blockchain !
+# > priority queue on monetary value, compute power
+# monetray > sorting complexcity , small amount will not get mined
+# compute > on connection, on modify ,or before trnx mine
+# con > wait time, wasting other compute nodes
 
 # app = Flask(__name__)
 # blockchain = Blockchain()

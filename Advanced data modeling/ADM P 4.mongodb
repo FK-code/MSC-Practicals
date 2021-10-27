@@ -1,0 +1,15 @@
+// Problem statement:
+// Perform the following on some document database
+// 1. create at least two collections
+// 2. insert five records in each
+// 3. Querying-filtering,join at least six queries
+// 4. UPdating a record
+// 5. deleting a record
+// 6. dropping collection and databases
+// Include dbref,composite objects,updatemany,lt,gt queries,aggregate join,mongodb compass
+
+// Select the database to use.
+use('Student');
+
+
+
